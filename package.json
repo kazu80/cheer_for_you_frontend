@@ -4,8 +4,11 @@
   "description": "",
   "main": "webpack.config.js",
   "dependencies": {
+    "@metamask/onboarding": "^1.0.0",
+    "ts-loader": "^8.0.14",
     "typescript": "^4.1.3",
-    "ts-loader": "^8.0.14"
+    "web3": "^1.3.3",
+    "web3-core": "^1.3.3"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^7.0.0",
