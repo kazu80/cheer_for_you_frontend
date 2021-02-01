@@ -1,16 +1,28 @@
 import MetaMaskOnboarding from '@metamask/onboarding'
 
 const forwarderOrigin = 'http://localhost:3000';
+const ETHER = 10 ** 18;
 
 const initialize = () => {
     const onboardButton     = document.getElementById('connectButton') as HTMLButtonElement;
     const getAccountsButton = document.getElementById('getAccount') as HTMLButtonElement;
     const getAccountsResult = document.getElementById('getAccountsResult');
+    const getBalanceResult  = document.getElementById('getBalanceResult');
 
     getAccountsButton.addEventListener('click', async () => {
         const { ethereum } = window;
         const accounts = await ethereum.request({ method: 'eth_accounts'});
+
         getAccountsResult.innerText = accounts[0] || 'Not able to get accounts';
+
+        const balance = await ethereum.request({
+            method: 'eth_getBalance',
+            params: [accounts[0], 'latest']
+        });
+
+        const balanceEther = parseInt(balance, 16) / ETHER;
+
+        getBalanceResult.innerText = balanceEther + "ETH";
     })
 
     const isMetamaskInstalled = () => {
