@@ -1,4 +1,4 @@
-import {getPropertiesElement, profile} from "./profile";
+import {getPropertiesElement, getStakingElement, profile} from "./profile";
 import {allAuthor, propertiesAuthor} from "./queries";
 import {property_meta} from "./graphql";
 
@@ -43,14 +43,19 @@ const getAuthors = async () => {
 
             // AuthorのカードElementを追加
             const authorInfoElement = await getAuthorInfoElement(authorAddress);
-            profiles.appendChild(authorInfoElement);
 
             // このAuthorのプロパティを取得
             const properties        = await property_meta(propertiesAuthor(authorAddress));
             const propertiesElement = await getPropertiesElement(properties);
+
+            // ステーキングフォームの追加
+            const stakingElement = await getStakingElement(authorAddress, properties.length);
+
+            profiles.appendChild(authorInfoElement);
+            authorInfoElement.appendChild(stakingElement);
             authorInfoElement.appendChild(propertiesElement);
         } catch (e) {
-            console.error(meta);
+            // console.error(meta);
         }
     }
 }

@@ -3,7 +3,9 @@
     "sourceMap": true,
     "target": "es5",
     "module": "es2015",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "include": ["src/types/*.d.ts", "**/*.ts", "**/*.tsx"]
 }

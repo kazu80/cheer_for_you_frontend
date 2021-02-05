@@ -1,3 +1,5 @@
+import {staking} from "./staking";
+
 export const profile = (image, name, biography): HTMLDivElement => {
     const card = document.createElement('div');
     card.classList.add("col-sm-4");
@@ -35,30 +37,6 @@ export const profile = (image, name, biography): HTMLDivElement => {
     button2.classList.add("btn","btn-sm","btn-primary","w-100","ml-2");
     button2.innerText = "Follow"
 
-    /**
-     * <div class="input-group mb-3">
-     <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-     <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-     </div>
-     */
-
-    const inputGroup = document.createElement('div');
-    inputGroup.classList.add("input-group");
-
-    const inputElement = document.createElement('input');
-    inputElement.classList.add("form-control");
-    inputElement.setAttribute("type", "text");
-    inputElement.setAttribute("placeholder", "0.00");
-
-    const stakingButton = document.createElement('button');
-    stakingButton.classList.add("btn", "btn-primary");
-    stakingButton.setAttribute("type", "button");
-    stakingButton.innerText = "DEV"
-
-    inputGroup.appendChild(inputElement);
-    inputGroup.appendChild(stakingButton);
-
-
     card.appendChild(flex);
 
     flex.appendChild(imageWrapper);
@@ -69,13 +47,47 @@ export const profile = (image, name, biography): HTMLDivElement => {
     prof.appendChild(nameWrapper);
     prof.appendChild(biographyWrapper);
     // prof.appendChild(buttonWrapper);
-    prof.appendChild(inputGroup);
 
     buttonWrapper.appendChild(button1);
     buttonWrapper.appendChild(button2);
 
     return card;
 };
+
+export const getStakingElement = async (address, total) : Promise<HTMLDivElement> => {
+    const inputGroup = document.createElement('div');
+    inputGroup.classList.add("input-group", "mb-2", );
+
+    const inputElement = document.createElement('input');
+    inputElement.classList.add("form-control");
+    inputElement.setAttribute("type", "text");
+    inputElement.setAttribute("placeholder", "0.00");
+    inputElement.setAttribute("name", "amount");
+
+    const addressElement = document.createElement('input');
+    addressElement.setAttribute("type", "hidden");
+    addressElement.setAttribute("name", "address");
+    addressElement.setAttribute("value", address);
+
+    const totalElement = document.createElement('input');
+    totalElement.setAttribute("type", "hidden");
+    totalElement.setAttribute("name", "total");
+    totalElement.setAttribute("value", total);
+
+    const stakingButton = document.createElement('button');
+    stakingButton.classList.add("btn", "btn-success", "btn-staking");
+    stakingButton.setAttribute("type", "button");
+    stakingButton.innerText = "DEV"
+
+    stakingButton.addEventListener("click", staking);
+
+    inputGroup.appendChild(addressElement);
+    inputGroup.appendChild(totalElement);
+    inputGroup.appendChild(inputElement);
+    inputGroup.appendChild(stakingButton);
+
+    return inputGroup;
+}
 
 export const getPropertiesElement = async (properties): Promise<HTMLUListElement> => {
     const listWrapper = document.createElement('ul');
