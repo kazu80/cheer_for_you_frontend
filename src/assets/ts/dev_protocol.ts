@@ -40,15 +40,34 @@ export const getDevAmount = async (walletAddress: string) => {
     return 0
 }
 
+let client = null;
+async function getClient() {
+    if (client === null) {
+        const endpoint  = await getEndpoint();
+        const provider  = new Web3.providers.HttpProvider(endpoint)
+
+        client = contractFactory(provider)
+    }
+
+    return client;
+}
+
 /**
  * 所持DEV数を取得する
  * @param walletAddress
  */
 export const getDevAmountByDevKit = async (walletAddress) => {
-    const endpoint  = await getEndpoint();
-    const provider  = new Web3.providers.HttpProvider(endpoint)
-    const client    = contractFactory(provider)
-    const devAmount = await client.dev('0x5caf454ba92e6f2c929df14667ee360ed9fd5b26').balanceOf(walletAddress)
+    const clientDev = await getClient();
+    // TODO このアドレスは、DevProtocolのコントラクトのアドレス？どこから取得できるのかを知りたい
+    const devAmount = await clientDev.dev('0x5caf454ba92e6f2c929df14667ee360ed9fd5b26').balanceOf(walletAddress)
 
     return devAmount;
+}
+
+export const stakeDev = async (propertyAddress: string, amount: string) => {
+    const clientDev = await getClient();
+
+    // TODO depositはdev-kitのどこからきているのか
+    // TODO https://github.com/dev-protocol/dev-kit-js/blob/main/lib/dev/index.ts
+    return clientDev.dev('0x5caf454ba92e6f2c929df14667ee360ed9fd5b26').deposit(propertyAddress, amount)
 }
