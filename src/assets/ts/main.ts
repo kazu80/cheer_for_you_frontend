@@ -7,10 +7,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     initialize();
     initializeDevProtocol();
 
-    const address = await getWalletAddress();
-    console.log("web3",  await getDevAmount(address));
-    console.log("devkit", await getDevAmountByDevKit(address));
-
-    // Todo Ropstenに向けてStakingしたい
+    // Todo Ropstenに向けてStakingしたい Ropstenのプロパティアドレスを取得できない
     // await stakeDev('xxxxxx', '0.0001')
 });

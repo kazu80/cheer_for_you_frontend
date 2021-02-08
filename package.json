@@ -5,6 +5,7 @@
   "main": "webpack.config.js",
   "dependencies": {
     "@devprotocol/dev-kit": "4.1.0",
+    "@ethersproject/bignumber": "^5.0.14",
     "@metamask/onboarding": "^1.0.0",
     "ts-loader": "^8.0.14",
     "typescript": "^4.1.3",

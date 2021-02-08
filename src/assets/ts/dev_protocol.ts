@@ -1,7 +1,8 @@
 import {AbiItem} from "web3-utils";
 import {getEndpoint} from "./metamask";
 import Web3 from "web3";
-import {contractFactory} from "@devprotocol/dev-kit";
+import {addresses, contractFactory} from "@devprotocol/dev-kit";
+import {BigNumber} from "@ethersproject/bignumber";
 
 /**
  * 所持DEV数を取得する: Web3
@@ -43,10 +44,9 @@ export const getDevAmount = async (walletAddress: string) => {
 let client = null;
 async function getClient() {
     if (client === null) {
-        const endpoint  = await getEndpoint();
-        const provider  = new Web3.providers.HttpProvider(endpoint)
-
-        client = contractFactory(provider)
+        const { ethereum } = window;
+        const provider     = new Web3(ethereum)
+        client = contractFactory(provider.currentProvider)
     }
 
     return client;
@@ -58,10 +58,13 @@ async function getClient() {
  */
 export const getDevAmountByDevKit = async (walletAddress) => {
     const clientDev = await getClient();
-    // TODO このアドレスは、DevProtocolのコントラクトのアドレス？どこから取得できるのかを知りたい
-    const devAmount = await clientDev.dev('0x5caf454ba92e6f2c929df14667ee360ed9fd5b26').balanceOf(walletAddress)
 
-    return devAmount;
+    // Todo more detail
+    const registryContract = clientDev.registry(addresses.eth.ropsten.registry)
+    const address = await registryContract.token()
+    const amount  = BigNumber.from(await clientDev.dev(address).balanceOf(walletAddress))
+
+    return amount.div("1000000000000000000").toString();
 }
 
 export const stakeDev = async (propertyAddress: string, amount: string) => {

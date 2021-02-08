@@ -7,6 +7,7 @@ export interface Ethereum extends HttpProvider {
     request: (any) => any
     isMetaMask: () => boolean
     on: any
+    currentProvider: (any) => any
 }
 
 declare global {

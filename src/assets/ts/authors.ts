@@ -1,11 +1,22 @@
 import {getPropertiesElement, getStakingElement, profile} from "./profile";
 import {allAuthor, propertiesAuthor} from "./queries";
 import {property_meta} from "./graphql";
+import {getWalletAddress} from "./metamask";
+import {getDevAmountByDevKit} from "./dev_protocol";
 
 const ENDPOINT = "https://dev-for-apps.azureedge.net/accounts?"
 
-export const initializeDevProtocol = () => {
-    const getAuthorsButton = document.getElementById("getAuthors") as HTMLButtonElement;
+export const initializeDevProtocol = async () => {
+    const getAccountsButton   = document.getElementById('getAccount') as HTMLButtonElement;
+    const getDevBalanceResult = document.getElementById("getDevBalanceResult");
+    const getAuthorsButton    = document.getElementById("getAuthors") as HTMLButtonElement;
+
+    // 所持DEV数を取得する
+    getAccountsButton.addEventListener('click', async () => {
+        getDevBalanceResult.innerText = await getDevAmountByDevKit(await getWalletAddress()) + 'DEV'
+    })
+
+    // Author一覧を取得する
     getAuthorsButton.addEventListener('click', getAuthors);
 };
 
