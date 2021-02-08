@@ -60,4 +60,51 @@ export const initialize = () => {
     }
 
     MetaMaskClientCheck();
+    eventObserve();
+}
+
+export const eventObserve = () => {
+    const { ethereum } = window;
+
+    ethereum.on('chainChanged', chainId => {
+        // handle the new network
+    })
+
+    ethereum.on('networkChanged', networkId => {
+        // handle the new network
+    })
+
+    ethereum.on('chainChanged', () => {
+        document.location.reload()
+    })
+}
+
+export const getWalletAddress = async () => {
+    const { ethereum } = window;
+    const accounts = await ethereum.request({ method: 'eth_accounts'});
+
+    if (!Array.isArray(accounts)) throw new Error('accounts is not array')
+
+    return accounts[0];
+}
+
+export const getNetworkId = async () => {
+    const { ethereum } = window;
+    return await ethereum.request({ method: 'net_version'});
+}
+
+export const getEndpoint = async () => {
+    // TODO RopstenのDEVを取得したい場合のアドレスを知りたい
+    const INFURA_ENDPOINT        = 'https://mainnet.infura.io/v3/75ebe953349644b6998136d868f5cd97'
+    const WEB3_PROVIDER_ENDPOINT = 'https://devprotocolnode.net/ethereum/mainnet'
+    const ROPSTEN_ENDPOINT       = 'https://ropsten.infura.io/v3/0xD6D07f1c048bDF2B3d5d9B6c25eD1FC5348D0A70'
+
+    switch (await getNetworkId()) {
+        case "1":
+            return WEB3_PROVIDER_ENDPOINT;
+        case "3":
+            return ROPSTEN_ENDPOINT;
+        default:
+            return 'http://localhost:8545/';
+    }
 }

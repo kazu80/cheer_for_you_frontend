@@ -6,6 +6,7 @@ export interface Ethereum extends HttpProvider {
     isConnected: () => boolean
     request: (any) => any
     isMetaMask: () => boolean
+    on: any
 }
 
 declare global {
