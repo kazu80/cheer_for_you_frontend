@@ -62,6 +62,7 @@ export const getDevAmountByDevKit = async (walletAddress) => {
     // Todo more detail
     const registryContract = clientDev.registry(addresses.eth.ropsten.registry)
     const address = await registryContract.token()
+
     const amount  = BigNumber.from(await clientDev.dev(address).balanceOf(walletAddress))
 
     return amount.div("1000000000000000000").toString();
@@ -70,7 +71,9 @@ export const getDevAmountByDevKit = async (walletAddress) => {
 export const stakeDev = async (propertyAddress: string, amount: string) => {
     const clientDev = await getClient();
 
-    // TODO depositはdev-kitのどこからきているのか
+    const registryContract = clientDev.registry(addresses.eth.ropsten.registry)
+    const address = await registryContract.token()
+
     // TODO https://github.com/dev-protocol/dev-kit-js/blob/main/lib/dev/index.ts
-    return clientDev.dev('0x5caf454ba92e6f2c929df14667ee360ed9fd5b26').deposit(propertyAddress, amount)
+    return clientDev.dev(address).deposit(propertyAddress, amount)
 }
